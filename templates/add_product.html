@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>products</title>
+</head>
+<body>
+    <div>
+        <form method="post" enctype="multipart/form-data" action="{% url 'add_product' %}">
+            {% csrf_token %}
+            <label>Product Name</label>
+            <input type="text" name="ProductName"><br>
+    
+            <label>Product Category</label>
+            <input type="text" name="ProductCategory"><br>
+    
+            <label>Image</label>
+            <input type="file" name="Image"><br>
+    
+            <label>Description</label>
+            <textarea name="Description"></textarea><br>
+    
+            <label>Price</label>
+            <input type="number" name="Price" step="0.01"><br>
+    
+            <label>Offer Price</label>
+            <input type="number" name="OfferPrice" step="0.01"><br>
+    
+            <button type="submit">Submit</button>
+        </form>
+    </div><br><br>
+    <div>
+        <table border="1" cellspacing="0" cellpadding="10" style="width: 80%; margin: auto; text-align: center; border-collapse: collapse;">
+            <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price (₹)</th>
+                    <th>Offer Price (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td><img src="{{ product.Image.url }}" alt="Product Image" style="width: 100px; height: auto; border-radius: 5px;"></td>
+                    <td>{{ product.ProductName }}</td>
+                    <td>{{ product.Description }}</td>
+                    <td>{{ product.Price }}</td>
+                    <td>{{ product.OfferPrice }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    
+</body>
+</html>

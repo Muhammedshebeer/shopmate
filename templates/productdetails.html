@@ -1,0 +1,428 @@
+{% extends 'header.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.ProductName }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        .product-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        max-width: 1200px;
+        width: 100%;
+    }
+
+    .product-text {
+        max-width: 600px;
+        padding-top: 20px;
+    }
+
+    .product-image img {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 50px 5px 50px 5px;
+    }
+    .product-listing {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    a {
+        text-decoration: none;
+        color: #0b0b0b;
+    }
+
+    .product-card {
+        border-radius: 10px;
+        width: 200px;
+        background-color: transparent;
+        padding: 20px;
+        text-align: center;
+    }
+
+
+    .product-card img {
+        width: 80%;
+        /* zoomed out by scaling down */
+        height: auto;
+        object-fit: contain;
+    }
+
+    .section-title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 24px;
+        margin: 40px 0 10px;
+    }
+
+    .stock-status.out-of-stock {
+        color: red;
+    }
+
+    .stock-status.low-quantity {
+        color: orange;
+    }
+
+    .stock-status.available {
+        color: green;
+    }
+    .all-section{
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+
+    /* Footer (already styled in your code) — keep as is */
+
+    @media (max-width: 720px) {
+        .product-content {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-text {
+            text-align: center;
+            padding-top: 0;
+        }
+
+        .product-image img {
+            max-width: 100%;
+        }
+
+        .subtitle-item {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .subtitle-item img {
+            margin-top: 10px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-hero {
+            padding: 20px 10px;
+        }
+
+        .product-card {
+            width: 90%;
+        }
+
+        .section-title {
+            font-size: 20px;
+        }
+    }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        
+
+        .product-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin: 10px;
+        }
+
+        .product-image {
+            flex: 1;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .product-details {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+           
+        }
+
+        .product-details h1 {
+            font-size: 2rem;
+            color: #222;
+        }
+
+        .product-details p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .stock-status {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: fit-content;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            background-color: black;
+            color: white;
+        }
+
+        .add-to-cart-btn:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+
+        .stock-status.out-of-stock {
+            color: red;
+        }
+
+        .stock-status.low-quantity {
+            color: orange;
+        }
+
+        .stock-status.available {
+            color: green;
+        }
+
+        .side-image {
+            height: 50px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+
+        .side-image.active-image {
+            border: 1px solid #595959;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .side-image:hover {
+            border: 1px solid #595959;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-image img {
+                max-width: 100%;
+            }
+
+            .product-details {
+                width: 100%;
+                align-items: center;
+                text-align: center;
+            }
+
+            .product-details h1 {
+                font-size: 1.5rem;
+            }
+
+            .add-to-cart-btn {
+                width: 100%;
+            }
+            .all-section{
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .prd-side-image{
+                display: flex;
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" >
+        <div  class="all-section">
+        <div class="prd-side-image">
+            {% for img in product.get_sidebar_images %}
+            <div class="product-image-side">
+                <img src="{{ img.url }}" alt="{{ product.ProductName }}" class="side-image" data-image="{{ img.url }}"
+                    onclick="changeMainImage('{{ img.url }}', this)">
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="product-container">
+            <div class="product-image">
+                <img id="mainImage" src="{{ product.Image.url }}" alt="{{ product.ProductName }}">
+            </div>
+
+            <div class="product-details">
+                <h1>{{ product.ProductName }}</h1>
+                <p>{{ product.Description }}</p>
+                <p class="price">Price: ${{ product.Price }}</p>
+
+                <p>
+                    <span class="stock-status {{ product.StockStatus|lower|slugify }}">
+                        {{ product.StockStatus }}
+                    </span>
+                </p>
+
+                {% if product.StockStatus == "Out of stock" %}
+                <button class="add-to-cart-btn" disabled>Out of Stock</button>
+                {% else %}
+                <button class="add-to-cart-btn" onclick="addToCart('{{ product.id }}')">Add to Cart</button>
+                {% endif %}
+                <br><br>
+
+                <div id="cart-message-{{ product.id }}"></div>
+
+                <div>
+                    <h2>About</h2><br>
+                    <p>{{ product.About }}</p>
+                </div>
+            </div>
+        </div>
+        </div><br><br><br>
+        <hr>
+        <br>
+        <!-- related products -->
+        <div>
+            <div style="padding: 0; position:relative; left:0; right:0%;">
+        <div class="section-title">FEATURED PRODUCTS</div>
+        <div class="product-listing">
+            {% for product in Featuredproducts %}
+            <a href="{% url 'product_detail' product.id %}">
+                <div class="product-card">
+                    <img src="{{ product.Image.url }}" alt="Product Image">
+                    <h2>{{ product.ProductName }}</h2>
+                    <!-- <p>{{ product.Description }}</p> -->
+                    <p><strong>Price:</strong> ₹{{ product.Price }}</p>
+                    <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
+            </a>
+            
+            <p>
+                <span class="stock-status {{ product.StockStatus|lower|slugify }}">
+                    {{ product.StockStatus }}
+                </span>
+            </p>
+
+            {% if product.StockStatus == "Out of stock" %}
+            <button disabled
+                style="background-color: grey; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: not-allowed;">
+                Out of Stock
+            </button>
+            {% else %}
+            <button onclick="addToCart('{{ product.id }}')"
+                style="background-color: #0b0b0b; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: pointer;">
+                Add to Cart
+            </button>
+            {% endif %}
+            
+            <div id="cart-message-{{ product.id }}" style="color: green; margin-top: 10px; display: none;"></div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+        </div>
+    </div>
+
+    <script>
+        function changeMainImage(imageUrl) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = imageUrl;
+        }
+
+        function addToCart(productId) {
+            fetch("{% url 'add_to_cart' 0 %}".replace('0', productId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),  // no data needed here
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const msgDiv = document.getElementById('cart-message-' + productId);
+                    if (data.success) {
+                        msgDiv.textContent = data.message;
+                        msgDiv.style.display = 'block';
+
+                        // Hide the message after 3 seconds
+                        setTimeout(() => {
+                            msgDiv.style.display = 'none';
+                            msgDiv.textContent = '';
+                        }, 1000);
+                    } else {
+                        msgDiv.textContent = 'Failed to add product.';
+                        msgDiv.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function changeMainImage(imageUrl, element) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = imageUrl;
+
+            // Remove active class from all
+            document.querySelectorAll('.side-image').forEach(img => {
+                img.classList.remove('active-image');
+            });
+
+            // Add active class to the clicked one
+            element.classList.add('active-image');
+        }
+
+        // Activate the first sidebar image on page load
+        window.onload = function () {
+            const firstImage = document.querySelector('.side-image');
+            if (firstImage) {
+                const imageUrl = firstImage.getAttribute('data-image');
+                changeMainImage(imageUrl, firstImage);
+            }
+        };
+    </script>
+
+</body>
+{% endblock %}
+
+</html>

@@ -1,0 +1,276 @@
+{% extends 'header.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+{% block content %}
+<style>
+  .product-listing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  a {
+    text-decoration: none;
+    color: #0b0b0b;
+  }
+
+  .product-card {
+    border-radius: 10px;
+    width: 300px;
+    background-color: transparent;
+    padding: 20px;
+    text-align: center;
+  }
+
+
+  .product-card img {
+    width: 80%;
+    /* zoomed out by scaling down */
+    height: auto;
+    object-fit: contain;
+  }
+
+
+  .stock-status.out-of-stock {
+    color: red;
+  }
+
+  .stock-status.low-quantity {
+    color: orange;
+  }
+
+  .stock-status.available {
+    color: green;
+  }
+
+  /* Hide filter toggle button by default */
+  .filter-toggle-btn {
+    display: none;
+    background-color: #0b0b0b;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    
+  }
+
+  /* Filter Bar styles (same as before) */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .filter-input,
+  .filter-select,
+  .filter-button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 200px;
+  }
+
+  .filter-button {
+    background-color: #0b0b0b;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .filter-button:hover {
+    background-color: #444;
+  }
+
+  /* Responsive below 720px */
+  @media (max-width: 720px) {
+
+    /* Show toggle button */
+    .filter-toggle-btn {
+      display: inline-block;
+    }
+
+    /* Hide filter bar by default */
+    .filter-bar {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    /* When active, show filter bar */
+    .filter-bar.active {
+      display: flex;
+    }
+
+    /* Make inputs full width */
+    .filter-input,
+    .filter-select,
+    .filter-button {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+
+
+
+  @media (max-width: 600px) {
+
+    .filter-input,
+    .filter-select,
+    .filter-button {
+      width: 100%;
+      min-width: unset;
+    }
+    .product-card {
+    width: 48%;  /* roughly half width with some gap */
+    margin-bottom: 20px; /* some spacing between rows */
+  }
+  .product-card {
+    border-radius: 5px;
+    width: 300px;
+    background-color: transparent;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(66, 66, 66, 0.093);
+  }
+  }
+
+  @media (max-width: 480px) {
+  .product-listing {
+    justify-content: space-between; /* ensures cards spread nicely */
+  }
+
+  .product-card {
+    width: 48%;  /* roughly half width with some gap */
+    margin-bottom: 20px; /* some spacing between rows */
+  }
+}
+</style>
+
+<body>
+  <!-- Filter Icon Button (hidden on desktop) -->
+  <button id="filter-toggle" class="filter-toggle-btn" aria-label="Toggle filters">
+    &#9776; Filters
+  </button>
+
+  <!-- Filter Bar -->
+
+  <form method="get" action="{% url 'all_products' %}" class="filter-bar" id="filter-bar">
+    <input type="text" name="search" value="{{ request.GET.search }}" placeholder="Search products..."
+      class="filter-input" />
+
+    <select name="brand" class="filter-select">
+      <option value="">All Brands</option>
+      {% for brand in brandsearch %}
+      <option value="{{ brand }}">{{ brand.Name }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="sort" class="filter-select">
+      <option value="">Sort By</option>
+      <option value="name_asc">Name (A-Z)</option>
+      <option value="name_desc">Name (Z-A)</option>
+      <option value="price_asc">Price (Low to High)</option>
+      <option value="price_desc">Price (High to Low)</option>
+    </select>
+
+    <button type="submit" class="filter-button">Apply</button>
+  </form>
+
+  <div class="" style="margin: 5px;"><p>ALL PRODUCTS</p></div>
+  <div style="padding: 0; position:relative; left:0; right:0%;">
+    <div class="product-listing">
+      {% for product in allproducts %}
+      <a href="{% url 'product_detail' product.id %}">
+        <div class="product-card">
+          <img src="{{ product.Image.url }}" alt="Product Image">
+          <h2>{{ product.ProductName }}</h2>
+          <!-- <p>{{ product.Description }}</p> -->
+          <p><strong>Price:</strong> ₹{{ product.Price }}</p>
+          <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
+      </a>
+
+      <p>
+        <span class="stock-status {{ product.StockStatus|lower|slugify }}">
+          {{ product.StockStatus }}
+        </span>
+      </p>
+
+      {% if product.StockStatus == "Out of stock" %}
+      <button disabled
+        style="background-color: grey; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: not-allowed;">
+        Out of Stock
+      </button>
+      {% else %}
+      <button onclick="addToCart('{{ product.id }}')"
+        style="background-color: #0b0b0b; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: pointer;">
+        Add to Cart
+      </button>
+      {% endif %}
+      <div id="cart-message-{{ product.id }}" style="color: green; margin-top: 10px; display: none;"></div>
+
+    </div>
+
+    {% endfor %}
+  </div>
+  </div>
+
+  <script>
+    document.getElementById('filter-toggle').addEventListener('click', function () {
+      const filterBar = document.getElementById('filter-bar');
+      filterBar.classList.toggle('active');
+    });
+
+    function addToCart(productId) {
+      fetch("{% url 'add_to_cart' 0 %}".replace('0', productId), {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),  // no data needed here
+      })
+        .then(response => response.json())
+        .then(data => {
+          const msgDiv = document.getElementById('cart-message-' + productId);
+          if (data.success) {
+            msgDiv.textContent = data.message;
+            msgDiv.style.display = 'block';
+
+            // Hide the message after 3 seconds
+            setTimeout(() => {
+              msgDiv.style.display = 'none';
+              msgDiv.textContent = '';
+            }, 1000);
+          } else {
+            msgDiv.textContent = 'Failed to add product.';
+            msgDiv.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</body>
+
+{% endblock %}
+
+</html>

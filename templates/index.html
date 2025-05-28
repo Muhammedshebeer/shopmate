@@ -1,0 +1,505 @@
+{% extends 'header.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textutils</title>
+</head>
+{% block content %}
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background-color: rgb(255, 255, 255);
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .main-hero {
+        height: 100vh;
+        width: 100%;
+        color: rgb(0, 0, 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .product-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .product-text {
+        max-width: 600px;
+        display: flex; 
+        flex-direction:column; 
+        gap:20px; 
+        align-items:center; 
+        position:relative; 
+        padding-top:70px;
+    }
+
+    .product-image img {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 50px 5px 50px 5px;
+    }
+
+    .subtitle-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+        padding: 40px 20px;
+    }
+
+    .subtitle-item {
+        background-color: #000000dc;
+        color: rgb(255, 255, 255);
+        border-radius: 50px 50px 50px 50px;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        align-items: center;
+    }
+
+    .subtitle-item img {
+        width: 10%;
+        /* zoomed out by scaling down */
+        height: auto;
+        object-fit: contain;
+    }
+
+    .product-listing {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    a {
+        text-decoration: none;
+        color: #0b0b0b;
+    }
+
+    .product-card {
+        border-radius: 10px;
+        width: 200px;
+        background-color: transparent;
+        padding: 20px;
+        text-align: center;
+    }
+
+
+    .product-card img {
+        width: 80%;
+        /* zoomed out by scaling down */
+        height: auto;
+        object-fit: contain;
+    }
+
+    .section-title {
+        text-align: center;
+        color: #0b0b0b;
+        font-weight: bold;
+        font-size: 24px;
+        margin: 40px 0 10px;
+    }
+
+    .stock-status.out-of-stock {
+        color: red;
+    }
+
+    .stock-status.low-quantity {
+        color: orange;
+    }
+
+    .stock-status.available {
+        color: green;
+    }
+
+
+    /* Footer (already styled in your code) — keep as is */
+
+    @media (max-width: 720px) {
+        .product-content {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-text {
+            text-align: center;
+            padding-top: 80px;
+            gap:10px;
+        }
+        
+
+        .product-image img {
+            max-width: 100%;
+        }
+
+        .subtitle-item {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .subtitle-item img {
+            margin-top: 10px;
+        }
+        .product-text {
+        max-width: 600px;
+        margin-top: -80px;
+        display: flex; 
+        flex-direction:column; 
+        gap:20px; 
+        align-items:center; 
+        position:relative; 
+        
+    }
+    
+    }
+
+    @media (max-width: 480px) {
+        .main-hero {
+            padding: 20px 10px;
+        }
+
+        .product-card {
+            width: 90%;
+        }
+
+        .section-title {
+            font-size: 20px;
+        }
+        .product-text {
+        max-width: 600px;
+        display: flex; 
+        flex-direction:column; 
+        gap:20px; 
+        align-items:center; 
+        position:relative; 
+        
+    }
+        
+    }
+
+
+    .footer {
+        background-color: #000000;
+        color: #fff;
+        padding: 40px 20px 10px;
+        font-family: 'Arial', sans-serif;
+    }
+
+
+    .footer-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .footer-container>div {
+        flex: 1 1 220px;
+    }
+
+    .footer h2,
+    .footer h4 {
+        margin-bottom: 15px;
+    }
+
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links ul li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .footer-links ul li a:hover {
+        color: #004ad4;
+    }
+
+    .footer-contact p {
+        margin: 5px 0;
+    }
+
+    .footer-social .social-icons a img {
+        width: 24px;
+        margin-right: 10px;
+        filter: brightness(0) invert(1);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        border-top: 1px solid #444;
+        padding-top: 15px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .footer-container {
+            
+            align-items: center;
+            justify-content: baseline;
+            text-align: center;
+        }
+        .footer {
+        background-color: #000000;
+        color: #fff;
+        
+        font-family: 'Arial', sans-serif;
+    }
+        
+    }
+</style>
+
+
+<body style="background-color: rgb(255, 255, 255);">
+    
+
+    <!-- <h1 style="text-align: center;">Textutils</h1>
+
+    <div style="text-align: center;">
+        <form action="analyze" method="get">
+            <textarea name="text" id="" placeholder="text here ..."></textarea><br>
+            Remove puncs<input name="remove" type="checkbox"><br>
+            capitalize<input name="capital" type="checkbox"><br>
+            
+            <button type="submit">Submit</button>
+    </form>
+    </div>
+    <div style="text-align: center;">
+        <p>{{name}}</p>
+    </div> -->
+
+
+    <div class="main-hero">
+        
+        <div class="product-content">
+
+            <div class="product-text">
+                <div>
+        <img src="{{ titles.Logo.url }}" alt="" style="height: 100px; position:relative;">
+        </div>
+                <div>
+                <h3>{{ titles.Title }}</h3>
+                </div>
+                <div>
+                <p>{{ titles.Description }}</p>
+                </div>
+            </div>
+            <div class="product-image">
+                <img src="{{ titles.Image.url }}" alt="Product Image">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <section class="subtitle-grid">
+        {% for sub in subtitle %}
+        <div class="subtitle-item">
+            <div>
+                <p>{{ sub.Description }}</p>
+            </div>
+            <img src="{{ sub.Image.url }}" alt="Subtitle Image">
+        </div>
+        {% endfor %}
+    </section> -->
+    <br><br>
+    <div style="position: relative; text-align:center;">
+        <hr>
+    </div><br><br>
+    <!-- <div>
+        <a href="{% url 'add_product' %}"><button>Add Products</button></a>
+    </div> -->
+    <div style="padding: 0; position:relative; left:0; right:0%;">
+        <div class="section-title">FEATURED PRODUCTS</div>
+        <div class="product-listing">
+            {% for product in Featuredproducts %}
+            <a href="{% url 'product_detail' product.id %}">
+                <div class="product-card">
+                    <img src="{{ product.Image.url }}" alt="Product Image">
+                    <h2>{{ product.ProductName }}</h2>
+                    <!-- <p>{{ product.Description }}</p> -->
+                    <p><strong>Price:</strong> ₹{{ product.Price }}</p>
+                    <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
+            </a>
+            
+            <p>
+                <span class="stock-status {{ product.StockStatus|lower|slugify }}">
+                    {{ product.StockStatus }}
+                </span>
+            </p>
+
+            {% if product.StockStatus == "Out of stock" %}
+            <button disabled
+                style="background-color: grey; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: not-allowed;">
+                Out of Stock
+            </button>
+            {% else %}
+            <button onclick="addToCart('{{ product.id }}')"
+                style="background-color: #0b0b0b; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: pointer;">
+                Add to Cart
+            </button>
+            {% endif %}
+            <div id="cart-message-{{ product.id }}" style="color: green; margin-top: 10px; display: none;"></div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+    </div>
+    <br><br>
+    <a href="{% url 'all_products' %}">
+    <div style="position: relative; text-align:center ">
+        <p><u> << View all products >> </u></p>
+    </div>
+    </a>
+
+    <div style="padding: 0; position:relative; left:0; right:0%;">
+        <div class="section-title">TOP DEALS</div>
+        <div class="product-listing">
+            {% for product in Topdealproducts %}
+            <a href="{% url 'product_detail' product.id %}">
+                <div class="product-card">
+                    <img src="{{ product.Image.url }}" alt="Product Image">
+                    <h2>{{ product.ProductName }}</h2>
+                    <!-- <p>{{ product.Description }}</p> -->
+                    <p><strong>Price:</strong> ₹{{ product.Price }}</p>
+                    <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
+            </a>
+            <!-- <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background-color: #0b0b0b; color:#fff; border-radius:5px; height:30px; padding:5px 10px; cursor:pointer;">
+                    Add to Cart
+                </button>
+            </form> -->
+            <p>
+                <span class="stock-status {{ product.StockStatus|lower|slugify }}">
+                    {{ product.StockStatus }}
+                </span>
+            </p>
+
+            {% if product.StockStatus == "Out of stock" %}
+            <button disabled
+                style="background-color: grey; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: not-allowed;">
+                Out of Stock
+            </button>
+            {% else %}
+            <button onclick="addToCart('{{ product.id }}')"
+                style="background-color: #0b0b0b; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: pointer;">
+                Add to Cart
+            </button>
+            {% endif %}
+            <div id="cart-message-{{ product.id }}" style="color: green; margin-top: 10px; display: none;"></div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+    </div>
+
+
+    <section>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <h2>ShopMate</h2>
+                    <p>Your go-to store for quality products!</p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Cart</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>Email: support@shopmate.com</p>
+                    <p>Phone: +1 (123) 456-7890</p>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><img src="facebook-icon.png" alt="Facebook" /></a>
+                        <a href="#"><img src="twitter-icon.png" alt="Twitter" /></a>
+                        <a href="#"><img src="instagram-icon.png" alt="Instagram" /></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShopMate. All rights reserved.</p>
+            </div>
+        </footer>
+    </section>
+
+
+    <script>
+        function addToCart(productId) {
+            fetch("{% url 'add_to_cart' 0 %}".replace('0', productId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),  // no data needed here
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const msgDiv = document.getElementById('cart-message-' + productId);
+                    if (data.success) {
+                        msgDiv.textContent = data.message;
+                        msgDiv.style.display = 'block';
+
+                        // Hide the message after 3 seconds
+                        setTimeout(() => {
+                            msgDiv.style.display = 'none';
+                            msgDiv.textContent = '';
+                        }, 1000);
+                    } else {
+                        msgDiv.textContent = 'Failed to add product.';
+                        msgDiv.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+    </script>
+</body>
+{% endblock %}
+
+</html>
