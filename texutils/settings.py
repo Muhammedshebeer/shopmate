@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t*%ex*j8hx)%3tc5y0p-%7oz@-72kbjy2pqoc818y-d_bgxov-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['shebii.pythonanywhere.com']
+ALLOWED_HOSTS = ['shopmate.pythonanywhere.com']
 
 
 
