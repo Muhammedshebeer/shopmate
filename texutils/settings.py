@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-t*%ex*j8hx)%3tc5y0p-%7oz@-72kbjy2pqoc818y-d_bgxov-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shebii.pythonanywhere.com']
+
 
 
 # Application definition
@@ -137,13 +138,13 @@ LOGOUT_REDIRECT_URL = 'login'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # where static files will be collected to
 
-# For development only:
-import os
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
+# Include only directories with static assets (CSS/JS/images) during development
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # your development static assets
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
