@@ -101,6 +101,7 @@ def home(request):
     titles = Titlepage.objects.first()
     subtitle = Subtitles.objects.all()
     category = Categories.objects.all()
+    certifications = GalleryandCertification.objects.all()
 
     Featuredproducts = Product.objects.none()  # fallback if no match
     Topdealproducts = Product.objects.none()
@@ -125,6 +126,7 @@ def home(request):
 
     
     context = {
+        'certifications':certifications,
         'products': products,
         'titles': titles,
         'subtitle': subtitle,

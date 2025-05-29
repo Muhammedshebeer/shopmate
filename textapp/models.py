@@ -43,8 +43,6 @@ class Product(models.Model):
     AvailableQuantity = models.IntegerField(default=1)
     ProductCategory = models.CharField(max_length=100,default="")
     Image = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    Image2 = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    Image3 = models.ImageField(upload_to='product_images/', blank=True, null=True)
     Sidebarimage = models.ImageField(upload_to='product_images/', blank=True, null=True)
     Sidebarimage2 = models.ImageField(upload_to='product_images/', blank=True, null=True)
     Sidebarimage3 = models.ImageField(upload_to='product_images/', blank=True, null=True)
@@ -116,4 +114,8 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(blank=True, null=True)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True) 
     price = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)
-    date = models.DateTimeField(auto_created=True,auto_now_add=True,blank=True, null=True)   
+    date = models.DateTimeField(auto_created=True,auto_now_add=True,blank=True, null=True)  
+    
+class GalleryandCertification(models.Model):
+    Image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    

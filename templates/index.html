@@ -1,343 +1,649 @@
 {% extends 'header.html' %}
 {% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Textutils</title>
-</head>
-{% block content %}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>WizardZ - Digital Marketing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
 
-<style>
-    html {
-        scroll-behavior: smooth;
-    }
+        }
 
-    body {
-        background-color: rgb(255, 255, 255);
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
+        button {
+            transition: all 0.3s ease;
+        }
 
-    .main-hero {
-        height: 100vh;
-        width: 100%;
-        color: rgb(0, 0, 0);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 20px;
-    }
-
-    .product-content {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 20px;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .product-text {
-        max-width: 600px;
-        display: flex; 
-        flex-direction:column; 
-        gap:20px; 
-        align-items:center; 
-        position:relative; 
-        padding-top:70px;
-    }
-
-    .product-image img {
-        width: 100%;
-        max-width: 450px;
-        height: auto;
-        object-fit: cover;
-        border-radius: 50px 5px 50px 5px;
-    }
-
-    .subtitle-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
-        padding: 40px 20px;
-    }
-
-    .subtitle-item {
-        background-color: #000000dc;
-        color: rgb(255, 255, 255);
-        border-radius: 50px 50px 50px 50px;
-        display: flex;
-        justify-content: space-around;
-        padding: 10px;
-        align-items: center;
-    }
-
-    .subtitle-item img {
-        width: 10%;
-        /* zoomed out by scaling down */
-        height: auto;
-        object-fit: contain;
-    }
-
-    .product-listing {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    a {
-        text-decoration: none;
-        color: #0b0b0b;
-    }
-
-    .product-card {
-        border-radius: 10px;
-        width: 200px;
-        background-color: transparent;
-        padding: 20px;
-        text-align: center;
-    }
+        button:hover {
+            transform: scale(1.05);
+        }
 
 
-    .product-card img {
-        width: 80%;
-        /* zoomed out by scaling down */
-        height: auto;
-        object-fit: contain;
-    }
 
-    .section-title {
-        text-align: center;
-        color: #0b0b0b;
-        font-weight: bold;
-        font-size: 24px;
-        margin: 40px 0 10px;
-    }
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-    .stock-status.out-of-stock {
-        color: red;
-    }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    .stock-status.low-quantity {
-        color: orange;
-    }
+        header {
+            padding: 30px 20px;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
 
-    .stock-status.available {
-        color: green;
-    }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
 
+        }
 
-    /* Footer (already styled in your code) — keep as is */
+        .top-bar nav a {
+            margin-left: 30px;
+            font-size: 14px;
+        }
 
-    @media (max-width: 720px) {
-        .product-content {
-            flex-direction: column;
+        /*.top-bar nav a:last-child {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }*/
+
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
             align-items: center;
         }
 
-        .product-text {
-            text-align: center;
-            padding-top: 80px;
-            gap:10px;
+        .hero-text {
+            max-width: 550px;
         }
-        
 
-        .product-image img {
+        .hero-text h1 {
+            font-size: 36px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .hero-text button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .hero-image img {
+            width: 320px;
             max-width: 100%;
         }
 
-        .subtitle-item {
+        .partners {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 40px 0;
+        }
+
+        .partners-slider img {
+            height: 250px;
+            margin: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .partners-slider-wrapper button {
+            display: none;
+        }
+
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-title {
+            color: #000;
+            font-weight: bold;
+            font-size: 14px;
+            background-color: #D8FF73;
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .service-box {
+            border-radius: 14px;
+            padding: 24px;
+            border: 2px solid #000;
+            background-color: #fff;
+            display: flex;
             flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-box.dark {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .service-box h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .service-box p {
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cta {
+            background-color: #f6f6f6;
+            padding: 60px 20px;
             text-align: center;
+
+            margin-top: 60px;
+            max-width: 1320px;
+        }
+
+        .cta h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            font-size: 14px;
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        .cta button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .case-study-title {
+            font-size: 14px;
+            background-color: #C6FF56;
+            padding: 4px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .case {
+            background-color: #000;
+            color: #fff;
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .case a {
+            display: inline-block;
+            margin-top: 12px;
+            color: #D8FF73;
+            font-weight: bold;
+        }
+
+        .contact-form {
+            margin-top: 60px;
+            background-color: #fff;
+            border-radius: 14px;
+            padding: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-form h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .gallery {
+            padding: 60px 20px;
+            /*background-color: #fafafa;*/
+            text-align: center;
+
+        }
+
+        .gallery-title {
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .gallery-grid img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .see-more-btn {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .product-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .product-text {
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            position: relative;
+            padding-top: 70px;
+        }
+
+        .product-image img {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 50px 5px 50px 5px;
+        }
+
+        .subtitle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+        }
+
+        .subtitle-item {
+            background-color: #000000dc;
+            color: rgb(255, 255, 255);
+            border-radius: 50px 50px 50px 50px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            align-items: center;
         }
 
         .subtitle-item img {
-            margin-top: 10px;
+            width: 10%;
+            /* zoomed out by scaling down */
+            height: auto;
+            object-fit: contain;
         }
-        .product-text {
-        max-width: 600px;
-        margin-top: -80px;
-        display: flex; 
-        flex-direction:column; 
-        gap:20px; 
-        align-items:center; 
-        position:relative; 
-        
-    }
-    
-    }
 
-    @media (max-width: 480px) {
-        .main-hero {
-            padding: 20px 10px;
+        .product-listing {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            position: relative;
+            right: 30px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0b0b0b;
         }
 
         .product-card {
-            width: 90%;
+            border-radius: 10px;
+            width: 200px;
+            background-color: transparent;
+            padding: 20px;
+            text-align: center;
+        }
+
+
+        .product-card img {
+            width: 80%;
+            /* zoomed out by scaling down */
+            height: auto;
+            object-fit: contain;
         }
 
         .section-title {
-            font-size: 20px;
-        }
-        .product-text {
-        max-width: 600px;
-        display: flex; 
-        flex-direction:column; 
-        gap:20px; 
-        align-items:center; 
-        position:relative; 
-        
-    }
-        
-    }
-
-
-    .footer {
-        background-color: #000000;
-        color: #fff;
-        padding: 40px 20px 10px;
-        font-family: 'Arial', sans-serif;
-    }
-
-
-    .footer-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 30px;
-        max-width: 1200px;
-        margin: auto;
-    }
-
-    .footer-container>div {
-        flex: 1 1 220px;
-    }
-
-    .footer h2,
-    .footer h4 {
-        margin-bottom: 15px;
-    }
-
-    .footer-links ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .footer-links ul li {
-        margin-bottom: 10px;
-    }
-
-    .footer-links ul li a {
-        color: #fff;
-        text-decoration: none;
-    }
-
-    .footer-links ul li a:hover {
-        color: #004ad4;
-    }
-
-    .footer-contact p {
-        margin: 5px 0;
-    }
-
-    .footer-social .social-icons a img {
-        width: 24px;
-        margin-right: 10px;
-        filter: brightness(0) invert(1);
-    }
-
-    .footer-bottom {
-        text-align: center;
-        margin-top: 30px;
-        border-top: 1px solid #444;
-        padding-top: 15px;
-        font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-        .footer-container {
-            
-            align-items: center;
-            justify-content: baseline;
             text-align: center;
+            color: #0b0b0b;
+            font-weight: bold;
+            font-size: 24px;
+            margin: 40px 0 10px;
         }
-        .footer {
-        background-color: #000000;
-        color: #fff;
-        
-        font-family: 'Arial', sans-serif;
-    }
-        
-    }
-</style>
+
+        .stock-status.out-of-stock {
+            color: red;
+        }
+
+        .stock-status.low-quantity {
+            color: orange;
+        }
+
+        .stock-status.available {
+            color: green;
+        }
 
 
-<body style="background-color: rgb(255, 255, 255);">
-    
+        @media (max-width: 720px) {
+            .product-listing {
+            position: relative;
+            right: 0px;
+        }
 
-    <!-- <h1 style="text-align: center;">Textutils</h1>
+            .partners {
+                display: none;
+            }
 
-    <div style="text-align: center;">
-        <form action="analyze" method="get">
-            <textarea name="text" id="" placeholder="text here ..."></textarea><br>
-            Remove puncs<input name="remove" type="checkbox"><br>
-            capitalize<input name="capital" type="checkbox"><br>
-            
-            <button type="submit">Submit</button>
-    </form>
-    </div>
-    <div style="text-align: center;">
-        <p>{{name}}</p>
-    </div> -->
+            .partners-slider-wrapper {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                position: relative;
+                padding: 20px;
+            }
+
+            .partners-slider {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+            }
+
+            .partners-slider img {
+                width: 150px;
+                height: auto;
+                flex: 0 0 auto;
+                object-fit: contain;
+            }
+
+            .slide-btn {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                color: #fff;
+                padding: 10px;
+                cursor: pointer;
+                font-size: 20px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1;
+            }
+
+            .slide-btn.prev {
+                left: 10px;
+            }
+
+            .slide-btn.next {
+                right: 10px;
+            }
+
+            .hero-image {
+                position: relative;
+                left: 16px;
+            }
+
+            .top-bar {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .menu {
+                display: flex;
+                flex-direction: row;
+
+            }
+
+            .top-bar {
+                text-align: center;
+                position: relative;
+                right: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .product-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-text {
+                text-align: center;
+                padding-top: 80px;
+                gap: 10px;
+            }
 
 
-    <div class="main-hero">
-        
-        <div class="product-content">
+            .product-image img {
+                max-width: 100%;
+            }
 
-            <div class="product-text">
-                <div>
-        <img src="{{ titles.Logo.url }}" alt="" style="height: 100px; position:relative;">
-        </div>
-                <div>
-                <h3>{{ titles.Title }}</h3>
-                </div>
-                <div>
-                <p>{{ titles.Description }}</p>
-                </div>
-            </div>
-            <div class="product-image">
-                <img src="{{ titles.Image.url }}" alt="Product Image">
-            </div>
-        </div>
-    </div>
+            .subtitle-item {
+                flex-direction: column;
+                text-align: center;
+            }
 
+            .subtitle-item img {
+                margin-top: 10px;
+            }
 
-    <!-- <section class="subtitle-grid">
-        {% for sub in subtitle %}
-        <div class="subtitle-item">
+            .product-text {
+                max-width: 600px;
+                margin-top: -80px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                position: relative;
+
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .main-hero {
+                padding: 20px 10px;
+            }
+
+            .product-card {
+                width: 90%;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .product-text {
+                max-width: 600px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                position: relative;
+
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- <div class="top-bar">
             <div>
-                <p>{{ sub.Description }}</p>
+                <h2>ArtForAphia</h2>
             </div>
-            <img src="{{ sub.Image.url }}" alt="Subtitle Image">
+            <div>
+                <nav class="menu" id="menu">
+                    <a href="#">ABOUT</a>
+                    <a href="#">SERVICES</a>
+                    <a href="#">GALLERY</a>
+                    <a href="#">CONTACT</a>
+                    <a href="/cart_view">CART</a>
+                    <a href="/logout">LOGOUT</a>
+                </nav>
+            </div>
+        </div> -->
+        <div class="hero">
+            <div class="hero-text">
+                <!-- <h1>Navigating the digital landscape for <span style="color: #C6FF56;"> success.</span></h1> -->
+                <h1 style="color: #C6FF56;">{{titles.Title}}</span></h1>
+                <p>{{ titles.Description }}</p>
+                <button>Book a consultation</button><br><br>
+            </div>
+            <div class="hero-image">
+                <img src="{{ titles.Image.url }}" alt="Marketing graphic">
+            </div>
+        </div><br><br><br>
+        <div class="partners-slider-wrapper">
+            <button class="slide-btn prev">&#10094;</button>
+            <div class="partners-slider">
+                {% for sub in subtitle %}
+
+
+                <img src="{{ sub.Image.url }}" alt="Subtitle Image">
+
+                {% endfor %}
+                <!-- <img src="images/photo_2025-05-29_00-51-57.jpg" /> -->
+                <!-- <img src="images/photo_2025-05-29_00-52-04.jpg" /> -->
+            </div>
+            <button class="slide-btn next">&#10095;</button>
         </div>
-        {% endfor %}
-    </section> -->
-    <br><br>
-    <div style="position: relative; text-align:center;">
-        <hr>
-    </div><br><br>
-    <!-- <div>
-        <a href="{% url 'add_product' %}"><button>Add Products</button></a>
-    </div> -->
+
+    </header>
+
+    <section>
+        <div class="services-title">Services</div>
+        <p style="margin-bottom: 20px; color: #333; font-size: 14px;">Our digital marketing agency offers the range of
+            services to meet your needs. Choose from SEO, PPC, social media, email marketing, and more.</p>
+        <div class="services-grid">
+
+            <div class="service-box dark">
+                <h3>Pay per click advertising</h3>
+                <p>Learn more</p>
+            </div>
+            <div class="service-box">
+                <h3>Search engine optimization</h3>
+                <p>Learn more</p>
+            </div>
+            <div class="service-box dark">
+                <h3>Social media marketing</h3>
+                <p>Learn more</p>
+            </div>
+            <div class="service-box">
+                <h3>E-mail marketing</h3>
+                <p>Learn more</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery">
+        <h3 class="gallery-title">Gallery & Certificates</h3>
+        <div class="gallery-grid">
+            {% for img in certifications %}
+            <img src="{{ img.Image.url }}" alt="Gallery Image 1">
+            {% endfor %}
+        </div><br><br>
+        <div class="see-more-container">
+            <button class="see-more-btn">See More</button>
+        </div>
+    </section>
+
     <div style="padding: 0; position:relative; left:0; right:0%;">
-        <div class="section-title">FEATURED PRODUCTS</div>
+        <div class="section-title">
+            <h3 class="gallery-title">Products</h3>
+        </div>
         <div class="product-listing">
             {% for product in Featuredproducts %}
             <a href="{% url 'product_detail' product.id %}">
@@ -348,7 +654,7 @@
                     <p><strong>Price:</strong> ₹{{ product.Price }}</p>
                     <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
             </a>
-            
+
             <p>
                 <span class="stock-status {{ product.StockStatus|lower|slugify }}">
                     {{ product.StockStatus }}
@@ -372,101 +678,93 @@
 
         {% endfor %}
     </div>
-    </div>
-    <br><br>
-    <a href="{% url 'all_products' %}">
-    <div style="position: relative; text-align:center ">
-        <p><u> << View all products >> </u></p>
-    </div>
-    </a>
 
-    <div style="padding: 0; position:relative; left:0; right:0%;">
-        <div class="section-title">TOP DEALS</div>
-        <div class="product-listing">
-            {% for product in Topdealproducts %}
-            <a href="{% url 'product_detail' product.id %}">
-                <div class="product-card">
-                    <img src="{{ product.Image.url }}" alt="Product Image">
-                    <h2>{{ product.ProductName }}</h2>
-                    <!-- <p>{{ product.Description }}</p> -->
-                    <p><strong>Price:</strong> ₹{{ product.Price }}</p>
-                    <p><strong>Offer:</strong> ₹{{ product.OfferPrice }}</p>
-            </a>
-            <!-- <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                {% csrf_token %}
-                <button type="submit"
-                    style="background-color: #0b0b0b; color:#fff; border-radius:5px; height:30px; padding:5px 10px; cursor:pointer;">
-                    Add to Cart
-                </button>
-            </form> -->
-            <p>
-                <span class="stock-status {{ product.StockStatus|lower|slugify }}">
-                    {{ product.StockStatus }}
-                </span>
-            </p>
+    <section class="cta">
+        <h3>Let’s make things happen</h3>
+        <p>Contact us today to learn how our digital marketing services can help your business grow and succeed online.
+        </p>
+        <button>Get your free proposal</button>
 
-            {% if product.StockStatus == "Out of stock" %}
-            <button disabled
-                style="background-color: grey; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: not-allowed;">
-                Out of Stock
-            </button>
-            {% else %}
-            <button onclick="addToCart('{{ product.id }}')"
-                style="background-color: #0b0b0b; color: #fff; border-radius: 5px; height: 30px; padding: 5px 10px; cursor: pointer;">
-                Add to Cart
-            </button>
-            {% endif %}
-            <div id="cart-message-{{ product.id }}" style="color: green; margin-top: 10px; display: none;"></div>
+        <section class="contact-form">
+            <h3>Contact Us</h3>
+            <form action="#" method="POST">
+                <div style="display: flex; gap:30px;">
+                    <div>
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div>
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                </div>
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </section>
 
-        </div>
+    
 
-        {% endfor %}
-    </div>
-    </div>
 
 
     <section>
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-brand">
-                    <h2>ShopMate</h2>
-                    <p>Your go-to store for quality products!</p>
-                </div>
-
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">Cart</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-contact">
-                    <h4>Contact Us</h4>
-                    <p>Email: support@shopmate.com</p>
-                    <p>Phone: +1 (123) 456-7890</p>
-                </div>
-
-                <div class="footer-social">
-                    <h4>Follow Us</h4>
-                    <div class="social-icons">
-                        <a href="#"><img src="facebook-icon.png" alt="Facebook" /></a>
-                        <a href="#"><img src="twitter-icon.png" alt="Twitter" /></a>
-                        <a href="#"><img src="instagram-icon.png" alt="Instagram" /></a>
-                    </div>
-                </div>
+        <div class="case-study-title">Case study</div>
+        <p style="font-size: 14px; margin-bottom: 20px; color: #333;">Explore Real-Life Examples of Our Proven Digital
+            Marketing Success through Our Case Studies.</p>
+        <div class="case-studies">
+            <div class="case">
+                <p>Full-service marketing for a SaaS startup doubled leads in 3 months.</p>
+                <a href="#">Learn more →</a>
             </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopMate. All rights reserved.</p>
+            <div class="case">
+                <p>SEO and SEM combined helped local business grow 50% traffic.</p>
+                <a href="#">Learn more →</a>
             </div>
-        </footer>
+            <div class="case">
+                <p>For ecommerce client, email flows raised ROI by 3x in 6 months.</p>
+                <a href="#">Learn more →</a>
+            </div>
+        </div>
     </section>
+
+    <footer style="background-color: #000; color: #fff; padding: 20px 20px; text-align: center; margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h3 style="font-size: 20px; margin-bottom: 20px;">Follow Us</h3>
+            <div style="font-size: 24px; margin-bottom: 20px;">
+                <a href="#" style="margin: 0 10px; color: #fff;">&#x1F426; <!-- Twitter --></a>
+                <a href="#" style="margin: 0 10px; color: #fff;">&#x1F465; <!-- LinkedIn --></a>
+                <a href="#" style="margin: 0 10px; color: #fff;">&#x1F4F7; <!-- Instagram --></a>
+                <a href="#" style="margin: 0 10px; color: #fff;">&#x1F4FA; <!-- YouTube --></a>
+            </div>
+            <p style="font-size: 14px; color: #bbb;">&copy; 2025 WizardZ. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 
     <script>
+        AOS.init({ duration: 1000, once: true });
+
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('active');
+        }
+
+        const slider = document.querySelector('.partners-slider');
+        const prev = document.querySelector('.slide-btn.prev');
+        const next = document.querySelector('.slide-btn.next');
+
+        prev.addEventListener('click', () => {
+            slider.scrollBy({ left: -200, behavior: 'smooth' });
+        });
+
+        next.addEventListener('click', () => {
+            slider.scrollBy({ left: 200, behavior: 'smooth' });
+        });
+
         function addToCart(productId) {
             fetch("{% url 'add_to_cart' 0 %}".replace('0', productId), {
                 method: 'POST',
@@ -498,8 +796,11 @@
                 });
         }
 
+
     </script>
+
 </body>
+
 {% endblock %}
 
 </html>
